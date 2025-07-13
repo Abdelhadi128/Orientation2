@@ -220,68 +220,126 @@ export default function SingUp () {
     }
 
     return (
-        <div>
-            {responseMessage && <div className="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                                    <span className="font-medium"> {responseMessage}</span> 
-                                </div>
-            }
-            {errorMessage && <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                                    <span className="font-medium"> {errorMessage}</span> 
-                                </div>
-            }
-            <div className='h-screen lg:flex md:block sm:block items-center justify-around'>
-                <div className='lg:w-1/2 xl:w-1/2 2xl:w-1/2 md:w-full sm:w-full text-center h-1/2 grid place-items-center'>
-                    <div>
-                    <h1 className='mb-4 text-4xl text-blue-700 font-extrabold leading-none tracking-tight md:text-5xl lg:text-5xl dark:text-white'>
-                            Tawjih 360
-                        </h1>
-                        <p className='lg:text-3xl text-2xl font-bold'>
-                            Ensemble vers un meilleur avenir !
-                        </p>
-                    </div>
-                </div>
-                <div className='lg:w-1/2 xl:w-1/2 2xl:w-1/2 w-full pb-4'>
-                
-                    <form className="w-11/12 lg:w-9/12 mx-auto" onSubmit={handleData}> 
-                        <div>
-                            <h1 className='mb-6 text-xl font-bold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-5xl dark:text-white'> Créer un compt</h1>
-                        </div>
-                        <div className="relative z-0 w-full mb-5 group">
-                            <input type="email" ref={refEmail} onChange={handleEmail} name="floating_email" id="floating_email" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "  />
-                            <label htmlFor="floating_email" className="peer-focus:font-medium absolute text-sm  text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-1 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email address</label>
-                            <p className='text-red-600'>{errors.email}</p>
-                        </div>
-                        <div className="relative z-0 w-full mb-5 group">
-                            <input type="password" ref={refPassword} onChange={handlePassword} name="floating_password" id="floating_password" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "  />
-                            <label htmlFor="floating_password" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-1 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Mot de passe</label>
-                            <p className='text-red-600'>{errors.password}</p>
-                        </div>
-                        <div className="relative z-0 w-full mb-5 group">
-                            <input type="password" ref={refPasswordConfirmation} onChange={handlePasswordConfirmation} name="repeat_password" id="floating_repeat_password" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "  />
-                            <label htmlFor="floating_repeat_password" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-1 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Confirmé le mot de passe</label>
-                            <p className='text-red-600'>{errors.passwordConfirmation}</p>
-                        </div>
-                        <div className="grid md:grid-cols-2 md:gap-6">
-                            <div className="relative z-0 w-full mb-5 group">
-                                <input type="text" ref={refSchoolName} onChange={handleSchoolName} name="floating_first_name" id="floating_first_name" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "  />
-                                <label htmlFor="floating_first_name" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-1 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nom d'école</label>
-                                <p className='text-red-600'>{errors.schoolName}</p>
-                            </div>
-                            <div className="relative z-0 w-full mb-5 group">
-                                <input type="tel" ref={refPhoneNumber} onChange={handlePhoneNumber} name="floating_phone" id="floating_phone" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "  />
-                                <label htmlFor="floating_phone" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-1 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Numéro téléphone </label>
-                                <p className='text-red-600'>{errors.phoneNumber}</p>
-                            </div>
-                        </div>
-                        <Link to={'/Login'} className='mb-3 block'>
-                            Déjà inscrit ? <button className='text-blue-600'>Se connecter</button>
-                        </Link> <Link to={'/Register'} className='mb-3 block'>
-                            tu es un etudiant ? <button className='text-blue-600'>Inscrivez</button>
-                        </Link>
-                        <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-                    </form>
-                </div>
+         <div className="min-h-96 bg-white flex items-center justify-center lg:justify-between px-4 sm:px-6 lg:px-8 gap-15">
+      {/* Partie gauche avec le logo et slogan */}
+      <div className="hidden lg:block text-center w-1/2">
+        <h1 className="text-5xl font-bold text-blue-800 mb-4">DALLEL</h1>
+        <h4 className="text-2xl font-semibold text-gray-600">Ensemble vers un meilleur avenir !</h4>
+      </div>
+
+      {/* Partie droite avec le formulaire */}
+      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
+        {/* Messages de feedback */}
+        {responseMessage && (
+          <div className="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50" role="alert">
+            <span className="font-medium">{responseMessage}</span>
+          </div>
+        )}
+        {errorMessage && (
+          <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
+            <span className="font-medium">{errorMessage}</span>
+          </div>
+        )}
+
+        <form className="space-y-6" onSubmit={handleData}>
+          <h1 className="text-3xl font-bold text-center text-blue-800">Créer un compte</h1>
+
+          {/* Champ Email */}
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+            <input
+              type="email"
+              id="email"
+              ref={refEmail}
+              onChange={handleEmail}
+              className={`mt-1 block w-full px-3 py-2 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+              placeholder="votre@email.com"
+            />
+            {errors.email && <p className="mt-2 text-sm text-red-600">{errors.email}</p>}
+          </div>
+
+          {/* Champ Mot de passe */}
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Mot de passe</label>
+            <input
+              type="password"
+              id="password"
+              ref={refPassword}
+              onChange={handlePassword}
+              className={`mt-1 block w-full px-3 py-2 border ${errors.password ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+              placeholder="••••••••"
+            />
+            {errors.password && <p className="mt-2 text-sm text-red-600">{errors.password}</p>}
+          </div>
+
+          {/* Confirmation mot de passe */}
+          <div>
+            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">Confirmer le mot de passe</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              ref={refPasswordConfirmation}
+              onChange={handlePasswordConfirmation}
+              className={`mt-1 block w-full px-3 py-2 border ${errors.passwordConfirmation ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+              placeholder="••••••••"
+            />
+            {errors.passwordConfirmation && <p className="mt-2 text-sm text-red-600">{errors.passwordConfirmation}</p>}
+          </div>
+
+          {/* Champs en ligne (Nom école et Téléphone) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="schoolName" className="block text-sm font-medium text-gray-700">Nom d'école</label>
+              <input
+                type="text"
+                id="schoolName"
+                ref={refSchoolName}
+                onChange={handleSchoolName}
+                className={`mt-1 block w-full px-3 py-2 border ${errors.schoolName ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                placeholder="Nom de votre école"
+              />
+              {errors.schoolName && <p className="mt-2 text-sm text-red-600">{errors.schoolName}</p>}
             </div>
-        </div>
+
+            <div>
+              <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Téléphone</label>
+              <input
+                type="tel"
+                id="phone"
+                ref={refPhoneNumber}
+                onChange={handlePhoneNumber}
+                className={`mt-1 block w-full px-3 py-2 border ${errors.phoneNumber ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                placeholder="06 12 34 56 78"
+              />
+              {errors.phoneNumber && <p className="mt-2 text-sm text-red-600">{errors.phoneNumber}</p>}
+            </div>
+          </div>
+
+          {/* Bouton de soumission */}
+          <button
+            type="submit"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            S'inscrire
+          </button>
+
+          {/* Liens de navigation */}
+          <div className="text-sm text-center space-y-2">
+            <p className="text-gray-600">
+              Déjà inscrit ?{' '}
+              <Link to="/Login" className="font-medium text-blue-600 hover:text-blue-500">
+                Se connecter
+              </Link>
+            </p>
+            <p className="text-gray-600">
+              Vous êtes étudiant ?{' '}
+              <Link to="/Register" className="font-medium text-blue-600 hover:text-blue-500">
+                Inscrivez-vous ici
+              </Link>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
     )
 }

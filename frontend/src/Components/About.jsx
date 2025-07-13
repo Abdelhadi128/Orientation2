@@ -1,95 +1,86 @@
 import React from "react";
-import OIP from '../assets/OIP (2).jpeg';
-import OIP1 from '../assets/OIP.jpeg';
-import Menu from './Menu';
-import Footer from './Footer';
+import AboutImage from "../assets/aboutImage.jpeg";
+import Menu from "./Menu";
+import Footer from "./Footer";
+import { FaCheckCircle } from "react-icons/fa";
+
 const About = () => {
-  
   return (
-    <div>
-      <Menu/>
-      {/* Section À propos */}
-      <div className="container mx-auto py-10 px-5">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          <div className="relative">
-            {/* <img
-              className="w-3/4 rounded-lg"
-              src={OIP}
-              alt="À propos de Tawjih 360"
-            /> */}
-           <img
-              className="w-1/2 rounded-lg bg-white p-2 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-              src={OIP}
-              alt="Caractéristiques de Tawjih 360"
-            /> 
-          </div>
-          <div>
-            <p className="inline-block border border-gray-300 rounded-full py-1 px-4 text-gray-700">
-              À propos de nous
-            </p>
-            <h1 className="text-2xl font-bold mt-4">
-              Pourquoi choisir Tawjih 360 pour votre orientation ?
-            </h1>
-            <p className="mt-4 text-gray-600">
-              Tawjih 360 est une plateforme qui vous aide à choisir votre parcours académique en comparant les établissements, en réalisant des tests d’orientation comme SWOT et en recevant des conseils d’experts en éducation.
-            </p>
-            <ul className="mt-4 space-y-2">
-              <li className="flex items-center">
-                <span className="text-blue-500 mr-2">✔</span> Comparaison des écoles et universités
-              </li>
-              <li className="flex items-center">
-                <span className="text-blue-500 mr-2">✔</span> Tests analytiques pour guider votre choix
-              </li>
-              <li className="flex items-center">
-                <span className="text-blue-500 mr-2">✔</span> Conseils gratuits d’orientation scolaire
-              </li>
-            </ul>
-         
-          </div>
+    <div className="bg-white text-gray-900 min-h-screen flex flex-col">
+      <Menu />
+      {/* Hero */}
+      <section className="relative pt-20 bg-gradient-to-r from-blue-500 to-blue-300 text-white py-24 px-6 text-center">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-5xl font-extrabold mb-4 tracking-tight">
+            Bienvenue chez <span className="underline decoration-yellow-300">DALLEL</span>
+          </h1>
+          <p className="text-xl max-w-xl mx-auto font-light">
+            Une solution complète pour accompagner vos étudiants dans leur orientation scolaire.
+          </p>
         </div>
-      </div>
-
-      {/* Section Fonctionnalités */}
-      <div className="bg-white-500 text-bleu py-10">
-        <div className="container mx-auto px-5">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-            <div>
-              <p className="inline-block border border-black rounded-full py-1 px-4">
-                Fonctionnalités
-              </p>
-              <h1 className="text-2xl font-bold mt-4">Pourquoi choisir Tawjih 360 ?</h1>
-              <p className="mt-4">
-                Nous vous offrons une expérience complète pour vous aider à choisir votre avenir académique en toute confiance.
-              </p>
-              <div className="grid grid-cols-2 gap-4 mt-4">
-                <FeatureItem icon="📊" title="Analyse SWOT" subtitle="Découvrez vos forces et faiblesses" />
-                <FeatureItem icon="🎓" title="Données fiables" subtitle="Informations sur les établissements" />
-                <FeatureItem icon="🤖" title="Chatbot intelligent" subtitle="Réponses instantanées" />
-                <FeatureItem icon="💬" title="Communauté étudiante" subtitle="Discutez avec d'autres étudiants" />
-              </div>
-            </div>
-            <div>
-              <img
-                className="rounded-lg w-full"
-                src={OIP1}
-                alt="Fonctionnalités de Tawjih 360"
-              />
-            </div>
-          </div>
+        <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none" style={{height: "80px"}}>
+          <svg
+            className="relative block w-full h-full"
+            xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="none"
+            viewBox="0 0 1440 80"
+          >
+            <path
+              fill="#ffffff"
+              d="M0,0 C480,80 960,0 1440,80 L1440,0 L0,0 Z"
+            />
+          </svg>
         </div>
-      </div>
-      <Footer/></div>
-  );
+      </section>
 
-};
-const FeatureItem = ({ icon, title, subtitle }) => {
-  return (
-    <div className="flex items-center">
-      <div className="text-3xl">{icon}</div>
-      <div className="ml-3">
-        <p className="text-lg font-semibold">{title}</p>
-        <p className="text-sm">{subtitle}</p>
-      </div>
+      {/* Content Section */}
+      <section className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-16 items-stretch">
+        {/* Text Content */}
+        <div className="flex flex-col justify-center">
+          <h2 className="text-4xl font-bold mb-6 text-blue-700">
+            Notre mission
+          </h2>
+          <p className="text-gray-700 leading-relaxed mb-8 text-lg">
+            DALLEL aide votre école à offrir un accompagnement personnalisé et efficace à chaque étudiant. Gérez facilement les profils de vos élèves et guidez-les vers les filières qui leur correspondent.
+          </p>
+
+          <h3 className="text-2xl font-semibold mb-5 text-blue-600">Fonctionnalités clés</h3>
+          <ul className="space-y-5 text-gray-700 text-lg">
+            {[
+              "Gestion simple et centralisée des étudiants",
+              "Tests d'orientation adaptés à chaque profil",
+              "Comparaison objective des établissements et filières",
+              "Accès à des ressources pédagogiques pour vos élèves",
+            ].map((item, idx) => (
+              <li key={idx} className="flex items-center gap-4 hover:text-blue-600 transition-colors cursor-default">
+                <FaCheckCircle className="text-yellow-400 text-2xl flex-shrink-0" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Image */}
+        <div className="rounded-3xl overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-300 h-full">
+          <img
+            src={AboutImage}
+            alt="Accompagnement scolaire"
+            className="w-full h-full object-cover"
+          />
+        </div> 
+      </section>
+
+      {/* Commitment */}
+      <section className="bg-blue-50 py-20 px-8 text-center max-w-4xl mx-auto rounded-3xl shadow-lg">
+        <h3 className="text-3xl font-semibold mb-6 text-blue-700">
+          Notre engagement
+        </h3>
+        <p className="text-gray-700 text-lg leading-relaxed max-w-xl mx-auto tracking-wide">
+          Fournir aux écoles des outils fiables, simples et accessibles pour guider efficacement chaque étudiant vers son avenir.
+        </p>
+      </section>
+
+      <Footer />
     </div>
   );
 };
