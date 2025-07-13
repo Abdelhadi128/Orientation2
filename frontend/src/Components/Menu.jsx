@@ -20,7 +20,9 @@ function Menu() {
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="#" className="flex items-center space-x-3 rtl:space-x-reverse">
           <img src={DALLEEL} className="h-8" alt="Logo" />
-          <span className="self-center text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500 animate-pulse">DALLEL</span>        </a>
+          <span className="self-center text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600 animate-smoothPulse">DALLEL</span>
+        </a>
+
         <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
           <button 
             type="button" 

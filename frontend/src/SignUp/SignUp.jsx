@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useRef, useState } from 'react'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function SingUp () {
     
@@ -59,7 +59,7 @@ export default function SingUp () {
 
     const handleEmail = ()=>{
         const email = refEmail.current
-        if(!email.value.trim() === ''){
+        if(email.value.trim() === ''){
             setErrors((prevState)=>({...prevState, email:'L\'émail oubligatoire'}))
             return false
         }else if(!email.value.match(validateEmail)){
@@ -114,36 +114,11 @@ export default function SingUp () {
         }
     }
 
-
-    
     //  check the values of the inputs
     const handleData = async (e)=>{
         e.preventDefault()
         let validForm = true
-        // handleSchoolName() 
-        //     handleEmail()
-        //     handlePassword()
-        //     handlePasswordConfirmation()
-        //     handlePhoneNumber()
 
-        // if(handleSchoolName && handleEmail && handlePassword && handlePasswordConfirmation && handlePhoneNumber){
-        //     validForm = true
-        //     refEmail.current.value = ''
-        //     refPasswordConfirmation.current.value = ''
-        //     refPassword.current.value = ''
-        //     refSchoolName.current.value = ''
-        //     refPhoneNumber.current.value = ''
-        //     console.log(handleSchoolName , 'IF')
-
-        // }else{
-        //     handleSchoolName() 
-        //     handleEmail()
-        //     handlePassword()
-        //     handlePasswordConfirmation()
-        //     handlePhoneNumber()
-        //     console.log(handleSchoolName , 'ELSE')
-        // }
-        
         if(userData.schoolName.trim() === ''){
             validForm = false
             setErrors((prevState)=>({...prevState, schoolName:'Le nom de l\'école oubligatoire'}))
@@ -151,9 +126,10 @@ export default function SingUp () {
             setErrors((prevState)=>({...prevState, schoolName:''}))
         }
         if(userData.email.trim() === ''){
+            validForm = false
             setErrors((prevState)=>({...prevState, email:'L\'émail oubligatoire'}))
         }else if(!userData.email.match(validateEmail)){
-            
+            validForm = false
             setErrors((prevState)=>({...prevState, email:"L'email n'est pas valide"}))
         }else{
             setErrors((prevState)=>({...prevState, email:''}))
@@ -207,9 +183,7 @@ export default function SingUp () {
                 }
             }
         }catch(error){
-            // console.log('ERROR', error);
             if (error.response) {
-                // console.log('Réponse serveur (erreur):', error.response.data);
                 setResponseMessage('')
                 setErrorMessage(error.response.data.error || "Une erreur est survenue lors de l'inscription.");
             } else {
@@ -220,126 +194,116 @@ export default function SingUp () {
     }
 
     return (
-         <div className="min-h-96 bg-white flex items-center justify-center lg:justify-between px-4 sm:px-6 lg:px-8 gap-15">
-      {/* Partie gauche avec le logo et slogan */}
-      <div className="hidden lg:block text-center w-1/2">
-        <h1 className="text-5xl font-bold text-blue-800 mb-4">DALLEL</h1>
-        <h4 className="text-2xl font-semibold text-gray-600">Ensemble vers un meilleur avenir !</h4>
-      </div>
+        <div>
+            {responseMessage && <div className="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                                    <span className="font-medium"> {responseMessage}</span> 
+                                </div>
+            }
+            {errorMessage && <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                                    <span className="font-medium"> {errorMessage}</span> 
+                                </div>
+            }
+            <div className='h-screen lg:flex md:block sm:block items-center justify-around'>
+                <div className='lg:w-1/2 xl:w-1/2 2xl:w-1/2 md:w-full sm:w-full lg:flex xl:flex 2xl:flex hidden h-full items-center justify-center text-center px-4'>
+                    <div>
+                        <h1 className='mb-4 text-4xl text-blue-700 font-extrabold leading-none tracking-tight md:text-5xl lg:text-5xl dark:text-white'>
+                            <span className="self-center font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600 animate-smoothPulse">DALLEL</span>
+                        </h1>
+                        <p className='lg:text-3xl text-2xl font-bold'>
+                            Ensemble vers un meilleur avenir !
+                        </p>
+                    </div>
+                </div>
+                <div className='lg:w-1/2 xl:w-1/2 2xl:w-1/2 w-full h-full flex items-center justify-center px-4'>
+                    <form className="w-full max-w-md mx-auto p-4 bg-white rounded-md shadow-md" onSubmit={handleData}>
+                        <div>
+                            <h1 className="mb-4 text-3xl font-bold text-gray-800 dark:text-white text-center">Créer un compte</h1>
+                        </div>
 
-      {/* Partie droite avec le formulaire */}
-      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
-        {/* Messages de feedback */}
-        {responseMessage && (
-          <div className="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50" role="alert">
-            <span className="font-medium">{responseMessage}</span>
-          </div>
-        )}
-        {errorMessage && (
-          <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
-            <span className="font-medium">{errorMessage}</span>
-          </div>
-        )}
+                        <div className="mb-3">
+                            <label htmlFor="floating_email" className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Email address</label>
+                            <input
+                            type="email"
+                            ref={refEmail}
+                            onChange={handleEmail}
+                            name="floating_email"
+                            id="floating_email"
+                            className="w-full px-3 py-1.5 text-gray-900 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            placeholder="Enter your email"
+                            />
+                            <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+                        </div>
 
-        <form className="space-y-6" onSubmit={handleData}>
-          <h1 className="text-3xl font-bold text-center text-blue-800">Créer un compte</h1>
+                        <div className="mb-3">
+                            <label htmlFor="floating_password" className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Mot de passe</label>
+                            <input
+                            type="password"
+                            ref={refPassword}
+                            onChange={handlePassword}
+                            name="floating_password"
+                            id="floating_password"
+                            className="w-full px-3 py-1.5 text-gray-900 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            placeholder="Enter your password"
+                            />
+                            <p className="mt-1 text-sm text-red-600">{errors.password}</p>
+                        </div>
 
-          {/* Champ Email */}
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-            <input
-              type="email"
-              id="email"
-              ref={refEmail}
-              onChange={handleEmail}
-              className={`mt-1 block w-full px-3 py-2 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-              placeholder="votre@email.com"
-            />
-            {errors.email && <p className="mt-2 text-sm text-red-600">{errors.email}</p>}
-          </div>
+                        <div className="mb-3">
+                            <label htmlFor="floating_repeat_password" className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Confirmé le mot de passe</label>
+                            <input
+                            type="password"
+                            ref={refPasswordConfirmation}
+                            onChange={handlePasswordConfirmation}
+                            name="repeat_password"
+                            id="floating_repeat_password"
+                            className="w-full px-3 py-1.5 text-gray-900 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            placeholder="Confirm your password"
+                            />
+                            <p className="mt-1 text-sm text-red-600">{errors.passwordConfirmation}</p>
+                        </div>
 
-          {/* Champ Mot de passe */}
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Mot de passe</label>
-            <input
-              type="password"
-              id="password"
-              ref={refPassword}
-              onChange={handlePassword}
-              className={`mt-1 block w-full px-3 py-2 border ${errors.password ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-              placeholder="••••••••"
-            />
-            {errors.password && <p className="mt-2 text-sm text-red-600">{errors.password}</p>}
-          </div>
+                        <div className="mb-3">
+                            <label htmlFor="schoolName" className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Nom de l'école</label>
+                            <input
+                            type="text"
+                            ref={refSchoolName}
+                            onChange={handleSchoolName}
+                            id="schoolName"
+                            className="w-full px-3 py-1.5 text-gray-900 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            placeholder="Entrez le nom de l'école"
+                            />
+                            <p className="mt-1 text-sm text-red-600">{errors.schoolName}</p>
+                        </div>
 
-          {/* Confirmation mot de passe */}
-          <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">Confirmer le mot de passe</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              ref={refPasswordConfirmation}
-              onChange={handlePasswordConfirmation}
-              className={`mt-1 block w-full px-3 py-2 border ${errors.passwordConfirmation ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-              placeholder="••••••••"
-            />
-            {errors.passwordConfirmation && <p className="mt-2 text-sm text-red-600">{errors.passwordConfirmation}</p>}
-          </div>
+                        <div className="mb-4">
+                            <label htmlFor="phoneNumber" className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Numéro de téléphone</label>
+                            <input
+                            type="text"
+                            ref={refPhoneNumber}
+                            onChange={handlePhoneNumber}
+                            id="phoneNumber"
+                            className="w-full px-3 py-1.5 text-gray-900 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            placeholder="Entrez votre numéro de téléphone"
+                            />
+                            <p className="mt-1 text-sm text-red-600">{errors.phoneNumber}</p>
+                        </div>
 
-          {/* Champs en ligne (Nom école et Téléphone) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="schoolName" className="block text-sm font-medium text-gray-700">Nom d'école</label>
-              <input
-                type="text"
-                id="schoolName"
-                ref={refSchoolName}
-                onChange={handleSchoolName}
-                className={`mt-1 block w-full px-3 py-2 border ${errors.schoolName ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-                placeholder="Nom de votre école"
-              />
-              {errors.schoolName && <p className="mt-2 text-sm text-red-600">{errors.schoolName}</p>}
+                        <div className="mb-5 flex justify-center">
+                            <button type="submit" className="w-full py-3 bg-blue-700 text-white font-semibold rounded-md hover:bg-blue-800 transition-colors">
+                                S'inscrire
+                            </button>
+                        </div>
+
+                        <p className="text-center text-gray-600">
+                            Vous avez déjà un compte ?{' '}
+                            <Link to="/login" className="text-blue-600 hover:underline">
+                            Se connecter
+                            </Link>
+                        </p>
+                    </form>
+
+                </div>
             </div>
-
-            <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Téléphone</label>
-              <input
-                type="tel"
-                id="phone"
-                ref={refPhoneNumber}
-                onChange={handlePhoneNumber}
-                className={`mt-1 block w-full px-3 py-2 border ${errors.phoneNumber ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-                placeholder="06 12 34 56 78"
-              />
-              {errors.phoneNumber && <p className="mt-2 text-sm text-red-600">{errors.phoneNumber}</p>}
-            </div>
-          </div>
-
-          {/* Bouton de soumission */}
-          <button
-            type="submit"
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          >
-            S'inscrire
-          </button>
-
-          {/* Liens de navigation */}
-          <div className="text-sm text-center space-y-2">
-            <p className="text-gray-600">
-              Déjà inscrit ?{' '}
-              <Link to="/Login" className="font-medium text-blue-600 hover:text-blue-500">
-                Se connecter
-              </Link>
-            </p>
-            <p className="text-gray-600">
-              Vous êtes étudiant ?{' '}
-              <Link to="/Register" className="font-medium text-blue-600 hover:text-blue-500">
-                Inscrivez-vous ici
-              </Link>
-            </p>
-          </div>
-        </form>
-      </div>
-    </div>
+        </div>
     )
 }
