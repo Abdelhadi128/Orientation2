@@ -37,7 +37,7 @@ function Evenements() {
       setlieu("");
       setdate("");
       fetchevents();
-      setShowForm(false); // Masquer le formulaire après ajout/modif
+      setShowForm(false);
     } catch (error) {
       console.error("Erreur lors de la soumission :", error);
     }
@@ -57,84 +57,72 @@ function Evenements() {
     setNom(event.nom);
     setdescription(event.description);
     setlieu(event.lieu);
-    setdate(event.date.slice(10));
+    setdate(event.date.slice(0, 10));
     setShowForm(true);
   };
 
+  const filteredEvents = events.filter(
+    (u) =>
+      u.nom.toLowerCase().includes(searchitem.toLowerCase()) ||
+      u.description.toLowerCase().includes(searchitem.toLowerCase()) ||
+      u.lieu.toLowerCase().includes(searchitem.toLowerCase())
+  );
+
   return (
-    <div style={{ padding: "2rem", fontFamily: "Arial" }}className="flex-1 p-4">
-      <h1 style={{ textAlign: "center", marginBottom: "2rem" }}>Gestion des Evénements</h1>
-      <div className="flex items-center gap-4 mb-4">
-      <input
-        type="text"
-        placeholder="Rechercher un evenement..."
-        value={searchitem}
-        onChange={(e) => setsearch(e.target.value)}
-        className="mb-4 px-4 py-2 border rounded w-full max-w-md"
-      />
-      <button
-        onClick={() => setShowForm(!showForm)}
-        style={{
-          marginBottom: "1rem",
-          padding: "0.5rem 1rem",
-          backgroundColor: "#3498db",
-          color: "white",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer"
-        }}
-      >
-        {showForm ? "Fermer le formulaire" : "Ajouter un evénement"}
-      </button>
+    <div style={styles.page}>
+      <h1 style={styles.header}>Gestion des Événements</h1>
+
+      <div style={styles.controls}>
+        <input
+          type="text"
+          placeholder="Rechercher un événement..."
+          value={searchitem}
+          onChange={(e) => setsearch(e.target.value)}
+          style={styles.search}
+        />
+        <button onClick={() => setShowForm(!showForm)} style={styles.btnAdd}>
+          {showForm ? "Fermer le formulaire" : "Ajouter un événement"}
+        </button>
       </div>
 
       {showForm && (
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-            maxWidth: "400px",
-            marginBottom: "2rem"
-          }}
-        >
+        <form onSubmit={handleSubmit} style={styles.form}>
           <input
             type="text"
             placeholder="Nom"
             value={nom}
             onChange={(e) => setNom(e.target.value)}
             required
+            style={styles.input}
           />
           <input
             type="text"
-            placeholder="description"
+            placeholder="Description"
             value={description}
             onChange={(e) => setdescription(e.target.value)}
             required
+            style={styles.input}
           />
           <input
             type="date"
-            placeholder="date"
             value={date}
             onChange={(e) => setdate(e.target.value)}
             required
+            style={styles.input}
           />
           <input
             type="text"
-            placeholder="lieu"
+            placeholder="Lieu"
             value={lieu}
             onChange={(e) => setlieu(e.target.value)}
             required
+            style={styles.input}
           />
           <button
             type="submit"
             style={{
-              padding: "0.5rem",
-              backgroundColor: editingeventsId ? "#f39c12" : "#2ecc71",
-              color: "white",
-              border: "none",
-              borderRadius: "5px"
+              ...styles.btnSubmit,
+              backgroundColor: editingeventsId ? "#e67e22" : "#27ae60",
             }}
           >
             {editingeventsId ? "Modifier" : "Ajouter"}
@@ -142,62 +130,186 @@ function Evenements() {
         </form>
       )}
 
-      
-      <table
-        style={{
-          width: "100%",
-          borderCollapse: "collapse",
-          boxShadow: "0 0 10px rgba(0,0,0,0.1)"
-        }}
-      >
-        <thead>
-          <tr style={{ backgroundColor: "#f1f1f1" }}>
-            <th style={cellStyle}>Nom</th>
-            <th style={cellStyle}>Description</th>
-            <th style={cellStyle}>Date</th>
-            <th style={cellStyle}>Lieu</th>
-            <th style={cellStyle}>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-        {events
-            .filter((u) =>
-              u.nom.toLowerCase().includes(searchitem.toLowerCase())||( u.description.toLowerCase().includes(searchitem.toLowerCase()))||( u.lieu.toLowerCase().includes(searchitem.toLowerCase()))
-             
-                
-            )
-          .map((u) => (
-            <tr key={u._id}>
-              <td style={cellStyle}>{u.nom}</td>
-              <td style={cellStyle}>{u.description}</td>
-              <td style={cellStyle}>{u.date.slice(0,10)}</td>
-              <td style={cellStyle}>{u.lieu}</td>
-              <td style={cellStyle}>
-                <button
-                  onClick={() => handleEdit(u)}
-                  style={{ marginRight: "0.5rem", color:"white", backgroundColor: "rgba(11, 70, 234, 0.99)", border: "none", padding: "5px", cursor: "pointer" }}
-                >
-                  Modifier
-                </button>
-                <button
-                  onClick={() => handleDelete(u._id)}
-                  style={{ backgroundColor: "#e74c3c", border: "none", padding: "5px", color: "white", cursor: "pointer" }}
-                >
-                  Supprimer
-                </button>
-              </td>
+      <div style={styles.tableContainer}>
+        <table style={styles.table}>
+          <thead>
+            <tr style={styles.theadTr}>
+              <th style={styles.th}>Nom</th>
+              <th style={styles.th}>Description</th>
+              <th style={styles.th}>Date</th>
+              <th style={styles.th}>Lieu</th>
+              <th style={styles.th}>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filteredEvents.length > 0 ? (
+              filteredEvents.map((u) => (
+                <tr key={u._id} style={styles.tr}>
+                  <td style={styles.td}>{u.nom}</td>
+                  <td style={styles.td}>{u.description}</td>
+                  <td style={styles.td}>{u.date.slice(0, 10)}</td>
+                  <td style={styles.td}>{u.lieu}</td>
+                  <td style={styles.td}>
+                    <button onClick={() => handleEdit(u)} style={styles.btnEdit}>
+                      Modifier
+                    </button>
+                    <button onClick={() => handleDelete(u._id)} style={styles.btnDelete}>
+                      Supprimer
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" style={styles.noData}>
+                  Aucun événement trouvé
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
 
-const cellStyle = {
-  border: "1px solid #ddd",
-  padding: "8px",
-  textAlign: "left"
+const styles = {
+  page: {
+    maxWidth: 960,
+    margin: "1rem auto",
+    padding: "0 1rem",
+    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+background:
+      "linear-gradient(135deg, #4fa0fdff 0%, #0e3595ff 50%, #09c4d5ff 100%)", // ألوان متناسقة مع الـ menu (أزرق فاتح + أخضر تركواز)    borderRadius: 16,
+    color: "#fff",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
+  },
+  header: {
+    textAlign: "center",
+    padding: "1.5rem 0",
+    fontWeight: "900",
+    fontSize: "2.5rem",
+    letterSpacing: "2px",
+    textShadow: "1px 1px 5px rgba(0,0,0,0.4)",
+  },
+  controls: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: 16,
+    justifyContent: "center",
+    marginBottom: 24,
+  },
+  search: {
+    flex: "1 1 300px",
+    padding: "0.75rem 1rem",
+    borderRadius: 50,
+    border: "none",
+    fontSize: "1rem",
+    outline: "none",
+    boxShadow: "0 4px 15px rgba(0,0,0,0.25)",
+    color: "#0B3954",
+    backgroundColor: "#e0f7fa",
+  },
+  btnAdd: {
+background:
+      "linear-gradient(90deg, #16d616ff 0%, #1ABC9C 100%)", // أخضر تركواز متناسق مع menu    border: "none",
+    color: "#0B3954",
+    padding: "0.75rem 1.5rem",
+    fontWeight: "bold",
+    fontSize: "1.1rem",
+    borderRadius: 50,
+    cursor: "pointer",
+    boxShadow: "0 8px 20px rgba(126,217,87,0.6)",
+    transition: "all 0.3s ease",
+    flexShrink: 0,
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    maxWidth: 400,
+    margin: "0 auto 2rem",
+    gap: 12,
+  },
+  input: {
+    padding: "0.75rem 1rem",
+    fontSize: "1rem",
+    borderRadius: 50,
+    border: "none",
+    outline: "none",
+    boxShadow: "inset 0 4px 10px rgba(255 255 255 / 0.3)",
+    color: "#0B3954",
+    backgroundColor: "#e0f7fa",
+  },
+  btnSubmit: {
+    padding: "0.75rem 1rem",
+    borderRadius: 50,
+    border: "none",
+    fontWeight: "bold",
+    color: "#fff",
+    cursor: "pointer",
+    boxShadow: "0 5px 15px rgba(0,0,0,0.2)",
+    transition: "background-color 0.3s ease",
+  },
+  tableContainer: {
+    overflowX: "auto",
+    borderRadius: 12,
+    boxShadow: "0 5px 30px rgba(0,0,0,0.25)",
+  },
+  table: {
+    width: "100%",
+    borderCollapse: "separate",
+    borderSpacing: "0 10px",
+    minWidth: 650,
+  },
+  theadTr: {
+    backgroundColor: "rgba(255 255 255 / 0.15)",
+    borderRadius: 12,
+  },
+  th: {
+    padding: "15px 20px",
+    color: "#fff",
+    fontWeight: "600",
+    textAlign: "left",
+  },
+  tr: {
+    backgroundColor: "rgba(255 255 255 / 0.12)",
+    borderRadius: 12,
+    boxShadow: "0 4px 12px rgba(0,0,0,0.18)",
+    transition: "background-color 0.3s ease",
+  },
+  td: {
+    padding: "15px 20px",
+    color: "#e0f7fa",
+    fontWeight: "500",
+  },
+  btnEdit: {
+    marginRight: 12,
+    background: "linear-gradient(45deg, #4A90E2, #1ABC9C)",
+    border: "none",
+    color: "#fff",
+    padding: "8px 14px",
+    borderRadius: 50,
+    cursor: "pointer",
+    fontWeight: "600",
+    transition: "transform 0.3s ease",
+  },
+  btnDelete: {
+    background: "linear-gradient(45deg, #e52e71, #ff416c)",
+    border: "none",
+    color: "#fff",
+    padding: "8px 14px",
+    borderRadius: 50,
+    cursor: "pointer",
+    fontWeight: "600",
+    transition: "transform 0.3s ease",
+  },
+  noData: {
+    padding: "2rem",
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: "1.2rem",
+    color: "#ffc0cb",
+  },
 };
 
 export default Evenements;

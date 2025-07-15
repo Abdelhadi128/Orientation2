@@ -3,7 +3,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { useNavigate } from 'react-router-dom';
 import { Bar, Pie } from 'react-chartjs-2';
 
-import './SchoolPage.css';
+
 
 import {
   Chart as ChartJS,
@@ -20,7 +20,6 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tool
 
 function SchoolPage() {
   const navigate = useNavigate();
-  const [darkMode, setDarkMode] = useState(false);
   const [connectedStudents, setConnectedStudents] = useState(0);
   const [disconnectedStudents, setDisconnectedStudents] = useState(0);
   const [disconnectedDomaines, setDisconnectedDomaines] = useState(0);
@@ -41,9 +40,6 @@ function SchoolPage() {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    document.body.classList.toggle('dark-mode', darkMode);
-  }, [darkMode]);
 
   const chartDataEcoles = {
     labels: ['BTS', 'EST', 'ENSAM','OFPPT'],
@@ -92,14 +88,7 @@ function SchoolPage() {
 
   return (
     <div className="flex-1 p-5  min-h-screen">
-  <div className="flex justify-end mb-6">
-    <button
-      className="px-4 py-2 rounded-full bg-gray-200 hover:bg-gray-300 transition text-sm"
-      onClick={() => setDarkMode(!darkMode)}
-    >
-      {darkMode ? '☀️ Mode clair' : '🌙 Mode sombre'}
-    </button>
-  </div>
+ 
 
   {/* Cartes statistiques */}
   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

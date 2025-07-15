@@ -12,7 +12,7 @@ import ResetPassword from './Components/ResetPassword';
 import SchoolPage from './School/SchoolPage';
 import Home from "./Home/Home";
 import Menuuser from "./School/Menuuser";
-import Ecoles from "./School/Ecoles/Ecoles";
+import Ecoles from "./School/Ecoles/Ecoles.jsx";
 import EtudiantsNonConnecté  from "./School/Users/etudiants_non_connecté";
 import EtudiantsConnecté  from "./School/Users/etudiants_connecté";
 // import Domaines  from "./School/Users/Domaines";
@@ -55,11 +55,11 @@ function App() {
                  <Route path="/test" element={<Test />} />
                 <Route path="/" element={<Menuuser />} >
                     <Route path="/school/:id" element={<SchoolPage />} />
-                    <Route path="/ecoles" element={<Ecoles />} />
-                   <Route path="/Étudiants_non_connectés" element={<EtudiantsNonConnecté />} />
-                   <Route path="/Étudiants_connectés" element={<EtudiantsConnecté />} />
-                   <Route path="/Domaines" element={<Domaines />} />
-                   <Route path="/Evenement" element={<Evenements />} />
+                    <Route path="/ecoles" element={<EcolesE />} />
+                    <Route path="/Étudiants_non_connectés" element={<EtudiantsNonConnecté />} />
+                    <Route path="/Étudiants_connectés" element={<EtudiantsConnecté />} />
+                    <Route path="/Domaines" element={<Domaines />} />
+                    <Route path="/Evenement" element={<Evenements />} />
                 </Route>  
                  
             </Routes>

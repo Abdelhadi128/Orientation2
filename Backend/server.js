@@ -127,12 +127,25 @@ app.post('/forgot-password', async (req, res) => {
     });
 
 
-  const GROQ_API_KEY =process.env.GROQ_API_KEY;
+  const GROQ_API_KEY =process.env.GROQ_API;
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 app.post('/chat', async (req, res) => {
   const { message } = req.body;
 
   try {
+    const ecoles = await Ecole.find()
+      .populate('domaine', 'nom')  // جبد غير اسم الدومين باش ما تجبدش كلشي
+      .lean();
+
+    // 2. Créer un résumé lisible pour le chatbot
+    let context = 'Voici la liste des écoles et leurs domaines:\n\n';
+ecoles.forEach((ecole, i) => {
+      context += `${i + 1}. ${ecole.nom} (${ecole.type}), situé à ${ecole.lieu}\n`;
+      context += `   Domaine: ${ecole.domaine ? ecole.domaine.nom : 'Non renseigné'}\n`;
+      context += `   Description: ${ecole.description || 'Aucune description'}\n`;
+      context += `   Niveau Bac requis: ${ecole.niveauBac || 'Non spécifié'}\n`;
+      context += `   Lien: ${ecole.lien}\n\n`;
+    });
     const response = await fetch(GROQ_URL, {
       method: "POST",
       headers: {
@@ -140,21 +153,29 @@ app.post('/chat', async (req, res) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "llama3-8b-8192", // ou "mixtral-8x7b-32768"
-        messages: [{ role: "user", content: message }],
+        model: "llama3-8b-8192",
+        messages: [ { role: "system", content: context },
+          { role: "user", content: message }],
         temperature: 0.3,
-        max_tokens: true,
+        max_tokens: 100, // ici tu avais mis true (erreur)
       }),
     });
 
     const data = await response.json();
-    res.json({ reply: data.choices[0].message.content });
+
+    // ✅ Vérification avant l'accès à data.choices[0]
+    if (data.choices && data.choices.length > 0) {
+      res.json({ reply: data.choices[0].message.content });
+    } else {
+      res.status(500).json({ error: "Aucune réponse retournée par Groq" });
+    }
 
   } catch (error) {
     console.error("Erreur chatbot :", error);
     res.status(500).json({ error: "Erreur lors de la communication avec Groq" });
   }
 });
+
 
 app.post('/questions', async (req, res) => { 
   try {

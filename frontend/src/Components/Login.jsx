@@ -50,7 +50,7 @@ function Login() {
   return (
     <div className='login-container'>
       <div className='text-box'>
-        <h1 className='logo'>Tawjih 360</h1>
+        <h1 className='logo'>DALLEL</h1>
         <h4 className='subtitle '>Ensemble vers un meilleur avenir !</h4>
       </div>
 

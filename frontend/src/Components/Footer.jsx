@@ -51,9 +51,9 @@ const Footer = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* À propos */}
           <div>
-            <h5 className="text-blue-400 text-lg font-semibold mb-4">À propos de Tawjih 360</h5>
+            <h5 className="text-blue-400 text-lg font-semibold mb-4">À propos de DALLEL</h5>
             <p>
-              Tawjih 360 vous aide à trouver la meilleure orientation scolaire et universitaire selon votre profil et vos compétences.
+              DALLEL vous aide à trouver la meilleure orientation scolaire et universitaire selon votre profil et vos compétences.
             </p>
             <div className="flex space-x-3 mt-3">
               <a className="text-blue-400 hover:text-white" href="#" aria-label="Instagram"><i className="fab fa-instagram"></i></a>
@@ -103,7 +103,7 @@ const Footer = () => {
 
         {/* Copyright */}
         <div className="border-t border-gray-700 mt-8 pt-5 text-center text-gray-400">
-          &copy; 2025 <a className="text-blue-400" href="#">Tawjih 360</a>. Tous droits réservés.
+          &copy; 2025 <a className="text-blue-400" href="#">DALLEL</a>. Tous droits réservés.
         </div>
       </div>
     </footer>
