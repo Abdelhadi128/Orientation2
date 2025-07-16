@@ -2,7 +2,7 @@
 import mongoose from 'mongoose';
 
 const domaineSchema = new mongoose.Schema({
-  nom: { type: String, required: true },
+  nom: { type: String, description : String, required: true },
   // Liste des écoles liées à ce domaine (facultatif si tu préfères utiliser ref inverse)
   ecoles: [{
     type: mongoose.Schema.Types.ObjectId,

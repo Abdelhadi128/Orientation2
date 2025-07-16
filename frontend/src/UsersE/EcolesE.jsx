@@ -5,7 +5,8 @@ import axios from "axios";
 function EcolesE() {
   const [searchItem, setSearch] = useState("");
   const [ecoles, setEcoles] = useState([]);
-  const location = useLocation();
+  const {state} = useLocation();
+  console.log("State from UserPage:", state);
   const ecolesArray = location.state?.ecoles || [];
 
   useEffect(() => {
@@ -43,8 +44,8 @@ function EcolesE() {
       </div>
 
       <div style={styles.grid}>
-        {filteredEcoles.length > 0 ? (
-          filteredEcoles.map((ecole, key) => (
+        {state.ecoles.length > 0 ? (
+          state.ecoles.map((ecole, key) => (
             <div key={key} style={styles.card}>
               <img
                 src={ecole.img}

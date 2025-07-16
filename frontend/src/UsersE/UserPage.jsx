@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate, useParams, Link } from 'react-router-dom';
 import DALLEEL from '../assets/DALEEL.png';
 import Footer from '../Components/Footer';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Chatbot from './Chatbot';
-import {FaUserCircle} from 'react-icons/fa'
-import { Link } from 'react-router-dom';
-
+import { FaUserCircle, FaBars, FaTimes } from 'react-icons/fa';
 
 export default function UserPage() {
   const { id } = useParams();
-  const location = useLocation()
-  const userData = location.state
-  // const [ecoles, setEcoles] = useState([]);
-  const [domains, setDomains] = useState([])
-  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  const userData = location.state;
+
+  const [domains, setDomains] = useState([]);
+  const [isOpen, setIsOpen] = useState(false); // for user dropdown
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false); // for mobile nav menu
+
   const [filters, setFilters] = useState({
     lieu: '',
     type: '',
@@ -49,13 +49,7 @@ export default function UserPage() {
       toast.success('Merci pour nous contacter. Le conseiller va te répondre par email.', {
         position: 'top-center',
         autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
       });
-
       setQuestionEmail('');
       setQuestionText('');
       setModalOpen(false);
@@ -86,8 +80,6 @@ export default function UserPage() {
       setDomains([]);
     }
   };
-        // console.log(domains)
-
 
   const handleChange = (e) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
@@ -98,138 +90,194 @@ export default function UserPage() {
     navigate("/login");
   };
 
-  const toggleDropdown = ()=>{
-    setIsOpen(!isOpen)
-  }
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
 
-  const getEcoles = (e, domaine)=>{
-    e.preventDefault()
-    console.log(domaine.ecoles)
-    navigate(`ecoles`, {state:{ecoles : domaine.ecoles}})
-  }
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  const getEcoles = (e, domaine) => {
+    e.preventDefault();
+    console.log(domaine.ecoles);
+    navigate(`ecoles`, { state: { ecoles: domaine.ecoles } });
+  };
+
   return (
     <div>
       {/* Navbar */}
-      <nav className="flex items-center justify-between px-6 py-3 bg-gray-100 shadow">
-        <div className="flex items-center space-x-4">
-          {/* <img src={DALLEEL} className="h-8" alt="Logo" /> */}
-          <span className="font-bold text-xl">DALLEL</span>
-        </div>
-        <div className="flex space-x-4">
-          <div className="flex items-center space-x-2">
-            <input
-              type="text"
-              name="search"
-              placeholder="Rechercher...🔎 "
-              value={filters.search}
-              onChange={handleChange}
-              onClick={fetchEcoles}
-              onKeyDown={(e) => { if (e.key === 'Enter') fetchEcoles(); }}
-              className="border rounded px-3 py-1 w-64"
-            />
-          </div>
-        
-          <div>
-              <button type="button" onClick={toggleDropdown}  className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button"  aria-expanded={isOpen ? 'true' : 'false'} data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
-                <span className="sr-only">Open user menu</span>
-                    {userData?.photoProfile ? (
-                        <img className="w-8 h-8 rounded-full" src={userData.photoProfile} alt="user photo" />
-                    ) : (
-                        <FaUserCircle size={30} color='white'/>
-                )}
-              </button>
-              <div className={`z-50 ${isOpen ? '' : 'hidden'} absolute right-0 top-8 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm dark:bg-gray-700 dark:divide-gray-600`} id="user-dropdown">
-                  <div className="px-4 py-3">
-                      {userData ? <>
-                        <span className="block text-sm text-gray-900 dark:text-white">{userData.name} {userData.prenom}</span>
-                        <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">{userData.email}</span>
-                        </> : <p>Chargement du profil...</p>
-                    }
-                  </div>
-                  <ul className="py-2" aria-labelledby="user-menu-button">
-                    <li>
-                      <Link to={'/test'} state={userData} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Test Orientation</Link>
-                    </li>
-                    <li>
-                        <button onClick={() => setModalOpen(true)} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Questions </button>
-                    </li>
-                    <li>
-                      {/* <Link to={'/g/profile'} state={userData} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Profile</Link> */}
-                    </li>
-                    <li>
-                      <button onClick={()=>handleLogout()} className="block w-full hover:bg-red-500  text-left  px-4 py-2 text-sm text-gray-700 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Déconnecter </button>
-                    </li>
-                  </ul>
-              </div>
-          </div>
-          </div>
-      </nav>
+      <nav className="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Left part with logo */}
+            <div className="flex items-center space-x-3 rtl:space-x-reverse">
+              <img src={DALLEEL} className="h-8" alt="Logo" />
+              <span className="self-center text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600 animate-smoothPulse">DALLEL</span>
+            </div>
 
-      {/* Zone filtres */}
-      <div className="flex items-center justify-right space-x-4 mt-4 mb-8 px-6 flex-wrap gap-4">
-        <select
-          name="type"
-          value={filters.type}
-          onChange={handleChange}
-          className="p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-        >
-          <option value="">Type</option>
-          <option value="public">Public</option>
-          <option value="privé">Privé</option>
-        </select>
-
-        <input
-          type="number"
-          name="seuil"
-          placeholder="Seuil max"
-          value={filters.seuil}
-          onChange={handleChange}
-          className="p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-        />
-
-        <button
-          onClick={fetchEcoles}
-          className="px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-semibold rounded-lg shadow-lg hover:from-blue-700 hover:to-blue-500 transition"
-        >
-          Filtrer
-        </button>
-      </div>
-
-      {/* Liste écoles */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 px-8 py-6 bg-gray-50 min-h-screen">
-        {Array.isArray(domains) && domains.length > 0 ? (
-          domains.map((domaine) => (
-            <div
-              key={domaine._id}
-              className="flex flex-col justify-between bg-white border border-gray-300 rounded-2xl p-6 shadow-md hover:shadow-2xl transition-shadow duration-300 cursor-pointer transform hover:-translate-y-1"
-            >
-              <div className='text-center'>
-                <h3 className="text-2xl font-extrabold text-indigo-800 mb-3 leading-tight">
-                  {domaine.nom}
-                </h3>
-                <p className="text-gray-600 text-base mb-6 leading-relaxed line-clamp-5">
-                  {domaine.description}
-                </p>
-              </div>
-
+            {/* Desktop menu */}
+            <div className="hidden md:flex md:items-center md:space-x-4">
+              <Link to={'/test'} state={userData} className="font-bold px-4 py-2 text-sm text-blue-500 hover:bg-gray-100 dark:hover:bg-gray-100 rounded-md dark:text-gray-200 dark:hover:text-white">Test Orientation</Link>
+              <Link to={`/user/${id}`} relative="path" state={userData} className="font-bold px-4 py-2 text-sm text-blue-500 hover:bg-gray-100 dark:hover:bg-gray-100 rounded-md dark:text-gray-200 dark:hover:text-white">Domaines</Link>
               <button
-                type="submit"
-                onClick={(e) => getEcoles(e, domaine)}
-                className="w-full py-3 bg-indigo-600 text-white font-semibold rounded-xl shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition"
+                type="button"
+                onClick={() => setModalOpen(true)}
+                className="font-bold px-4 py-2 text-sm text-blue-500 hover:bg-gray-100 rounded-md dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer"
               >
-                Détails
+                Questions
+              </button>
+              <button
+                onClick={handleLogout}
+                className="font-bold px-4 py-2 text-sm text-blue-500 hover:bg-gray-100 hover:text-rose-600 rounded-md dark:hover:bg-gray-100 dark:text-gray-200 dark:hover:text-white cursor-pointer"
+              >
+                Déconnecter
               </button>
             </div>
-          ))
-        ) : (
-          <p className="text-gray-400 text-center col-span-full italic text-lg mt-20">
-            Aucune école trouvée.
-          </p>
-        )}
-      </div>
 
-      <div>
-        <Outlet/>
+            {/* Mobile menu button */}
+            <div className="flex md:hidden items-center">
+              <button
+                onClick={toggleMobileMenu}
+                className="text-gray-800 dark:text-white hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+                aria-label="Toggle menu"
+              >
+                {mobileMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+              </button>
+            </div>
+
+            {/* User profile dropdown (desktop) */}
+            <div className="hidden md:block relative ml-4">
+              <div>
+                <button
+                type="button"
+                className="text-sm bg-gray-800 rounded-full focus:outline-none focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 cursor-pointer"
+                aria-label="User profile"
+              >
+                {userData?.photoProfile ? (
+                  <img className="w-8 h-8 rounded-full" src={userData.photoProfile} alt="user photo" />
+                ) : (
+                  <FaUserCircle size={30} color="white" />
+                )}
+              </button>
+
+              </div>
+              {/* Dropdown menu */}
+              {isOpen && (
+                <div
+                  className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-700 ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="user-menu-button"
+                  tabIndex="-1"
+                >
+                  <ul>
+                    <li>
+                      <Link to={'/test'} state={userData} className="block px-4 py-2 text-sm text-blue-500 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" role="menuitem" tabIndex="-1">
+                        Test Orientation
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to={`/user/${id}`} relative="path" state={userData} className="block px-4 py-2 text-sm text-blue-500 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" role="menuitem" tabIndex="-1">
+                        Domaines
+                      </Link>
+                    </li>
+                    <li>
+                      <button
+                        type="button"
+                        onClick={() => { setModalOpen(true); setIsOpen(false); }}
+                        className="block w-full text-left px-4 py-2 text-sm text-blue-500 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        Questions
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        onClick={() => { handleLogout(); setIsOpen(false); }}
+                        className="block w-full text-left px-4 py-2 text-sm text-blue-500 hover:bg-gray-100 hover:text-rose-600 dark:hover:bg-gray-100 dark:text-gray-200 dark:hover:text-white"
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        Déconnecter
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-600">
+          {/* Profile icon in mobile menu */}
+          <div className="flex items-center justify-center py-4 border-b border-gray-200 dark:border-gray-700">
+            {userData?.photoProfile ? (
+              <img
+                className="w-12 h-12 rounded-full"
+                src={userData.photoProfile}
+                alt="user photo"
+              />
+            ) : (
+              <FaUserCircle size={48} color="#3B82F6" />
+            )}
+          </div>
+            <ul className="px-2 pt-2 pb-3 space-y-1">
+              <li>
+                <Link
+                  to={'/test'}
+                  state={userData}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block px-3 py-2 rounded-md text-base font-bold text-blue-500 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-200"
+                >
+                  Test Orientation
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to={`/user/${id}`}
+                  relative="path"
+                  state={userData}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block px-3 py-2 rounded-md text-base font-bold text-blue-500 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-200"
+                >
+                  Domaines
+                </Link>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setModalOpen(true);
+                    setMobileMenuOpen(false);
+                  }}
+                  className="block w-full text-left px-3 py-2 rounded-md text-base font-bold text-blue-500 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-200"
+                >
+                  Questions
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="block w-full text-left px-3 py-2 rounded-md text-base font-bold text-blue-500 hover:bg-gray-100 hover:text-rose-600 dark:hover:bg-gray-700 dark:text-gray-200"
+                >
+                  Déconnecter
+                </button>
+              </li>
+            </ul>
+          </div>
+        )}
+      </nav>
+
+      {/* Main content */}
+      <div className="pt-20"> {/* padding top to offset fixed navbar */}
+        <Outlet />
       </div>
 
       {/* Message de confirmation */}
@@ -281,15 +329,15 @@ export default function UserPage() {
           </div>
         </div>
       )}
-{/* Chatbot d'orientation */}
-<div className="mt-12 px-6">
-  <Chatbot />
-</div>
+
+      {/* Chatbot d'orientation */}
+      <div className="mt-12 px-6">
+        <Chatbot />
+      </div>
 
       <br />
       <Footer />
-      <ToastContainer />
-
+      {/* <ToastContainer /> */}
     </div>
   );
 }

@@ -63,7 +63,7 @@ export default function EcoleDetails() {
   if (!ecole) return <div className="p-6 text-red-500">École non trouvée.</div>;
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
+    <div className="p-6 max-w-4xl mx-auto mt-10">
       <button
         onClick={() => navigate(-1)}
         className="mb-4 px-4 py-2 bg-gray-100 hover:bg-gray-400 rounded"

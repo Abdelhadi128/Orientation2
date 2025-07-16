@@ -24,14 +24,13 @@ import Register from "./SUser/register.jsx";
 import Test from "./UsersE/Test";
 import Domaines from "./School/layoutSchool/Domaines.jsx";
 import EcolesE from "./UsersE/EcolesE.jsx";
+import Domains from "./UsersE/Domains.jsx";
 
 function App() {
     return (
    <Router>
             <Routes>
                 <Route path="/" element={<Menu/>}>
-              
-
                     <Route path="/Login" element={<Login />} />
                     <Route index element={<Home />} />
                     <Route path="/signup" element={<SingUp/>}/>
@@ -40,19 +39,20 @@ function App() {
                     <Route path="/Home" element={<Home />} /> 
                     <Route path="/Forgotpassword" element={<Forgotpassword />} /> 
                     <Route path="/reset-password/:token" element={<ResetPassword />} />
-               
                 </Route> 
 
                 <Route path="user/:id" element={<UserPage />} >
+                    <Route index element={<Domains/>} />
                     <Route path="ecoles" element={<EcolesE />} />
                 </Route>
 
-                 <Route path="/Register" element={<Register />} />
+                <Route path="/Register" element={<Register />} />
 
                  {/* <Route path="/ecoles" element={<EcolesE />} /> */}
 
-                 <Route path="/ecole/:id" element={<EcoleDetails />} />
-                 <Route path="/test" element={<Test />} />
+                <Route path="/ecole/:id" element={<EcoleDetails />} />
+                <Route path="/test" element={<Test />} />
+                 {/* <Route path="domaines" element={<Domains/>} /> */}
                 <Route path="/" element={<Menuuser />} >
                     <Route path="/school/:id" element={<SchoolPage />} />
                     <Route path="/ecoles" element={<EcolesE />} />
@@ -61,7 +61,6 @@ function App() {
                     <Route path="/Domaines" element={<Domaines />} />
                     <Route path="/Evenement" element={<Evenements />} />
                 </Route>  
-                 
             </Routes>
     </Router>
     );
